@@ -59,6 +59,7 @@
 
 		  // Add the current transcript to the contents of our Note.
 		$("#text").html($("#text").html() + "<br>" +transcript);
+		translateToEnglish(transcript);
 		console.log(event.results);
 		$('#btn-stop').css({
 		  	backgroundColor: "#ddd"
