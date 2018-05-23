@@ -28,16 +28,21 @@
 		recognition.maxAlternatives = 5;
 		recognition.onstart = function() { 
 		  console.log('Reconhecimento de voz ativado.');
+		  $("#text").html($("#text").html() + "<br>Reconhecimento ativado");
 		}
 
 		recognition.onspeechend = function() {
-		  console.log('Sil√ncio detectado. Reconhecimento de voz desativado.');
+		  console.log('Silencio detectado. Reconhecimento de voz desativado.');
+		  $("#text").html($("#text").html() + "<br>Reconhecimento desativado");
 		}
 
 		recognition.onerror = function(event) {
 		  if(event.error == 'no-speech') {
-		    console.log('Nenhuma fala foi detectada.');  
-		  };
+		    console.log('Nenhuma fala foi detectada.');
+		    $("#text").html($("#text").html() + "<br>Nenhuma fala detectada");  
+		  } else {
+		  	$("#text").html($("#text").html() + "<br>ERRO: "+event.error);
+		  }
 		}
 
 		recognition.onresult = function(event) {
@@ -51,7 +56,7 @@
 		  var transcript = event.results[current][0].transcript;
 
 		  // Add the current transcript to the contents of our Note.
-		$("#text").text($("#text").text() + " | " +transcript);
+		$("#text").html($("#text").html() + "<br>" +transcript);
 		console.log(event.results);
 		$('#btn-stop').css({
 		  	backgroundColor: "#ddd"
@@ -82,6 +87,7 @@
 		});
 	} catch(e) {
 		console.error(e);
+		$("#text").html($("#text").html() + "<br>ERRO: "+e);
 	}
 </script>
 
