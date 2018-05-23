@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+	<style type="text/css">
+		.btn {
+			padding: 4px;
+			border: 1px solid #000;
+			background-color: #ddd;
+		}
+	</style>
+	<script
+	  src="https://code.jquery.com/jquery-3.3.1.min.js"
+	  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	  crossorigin="anonymous"></script>
+	</head>
+<body>
+<div id='btn-start' class='btn'>Start</div>
+<div id='btn-stop' class='btn'>Stop</div>
+
+<div id='text'></div>
+
+<script type="text/javascript">
+	try {
+		var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+		var recognition = new SpeechRecognition();
+		recognition.lang = 'pt-BR';
+		recognition.maxAlternatives = 5;
+		recognition.onstart = function() { 
+		  console.log('Reconhecimento de voz ativado.');
+		}
+
+		recognition.onspeechend = function() {
+		  console.log('Sil√ncio detectado. Reconhecimento de voz desativado.');
+		}
+
+		recognition.onerror = function(event) {
+		  if(event.error == 'no-speech') {
+		    console.log('Nenhuma fala foi detectada.');  
+		  };
+		}
+
+		recognition.onresult = function(event) {
+
+		  // event is a SpeechRecognitionEvent object.
+		  // It holds all the lines we have captured so far. 
+		  // We only need the current one.
+		  var current = event.resultIndex;
+
+		  // Get a transcript of what was said.
+		  var transcript = event.results[current][0].transcript;
+
+		  // Add the current transcript to the contents of our Note.
+		  console.log(transcript);
+		$("#text").text(transcript);
+		console.log(event.results);
+		}
+
+		$('#btn-start').on('click', function(e) {
+		  recognition.start();
+		  $('#btn-start').css({
+		  	backgroundColor: "#999"
+		  });
+		});
+
+		$('#btn-stop').on('click', function(e) {
+		  recognition.stop();
+		  $('#btn-stop').css({
+		  	backgroundColor: "#999"
+		  });
+		});
+	} catch(e) {
+		console.error(e);
+	}
+</script>
+
+</body>
+</html>
