@@ -95,6 +95,16 @@
 		console.error(e);
 		$("#text").html($("#text").html() + "<br>ERRO: "+e);
 	}
+
+	function translateToEnglish(value) {
+		var url = "https://transalation.googleapis.com/language/translate/v2?key=AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI";
+		url += "&source=pt"
+		url += "&target=en"
+		url += "&q="+value;
+		$.get(url, function(data, status) {
+			$("#text").html($("#text").html() + "<br><i>" +data.data.translations[0].translatedText+"</i>");
+		});
+	}
 </script>
 
 </body>
