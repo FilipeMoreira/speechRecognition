@@ -32,7 +32,6 @@
 
 		recognition.onspeechend = function() {
 		  console.log('Silencio detectado. Reconhecimento de voz desativado.');
-		  recognition.start();
 		}
 
 		recognition.onerror = function(event) {
@@ -54,6 +53,8 @@
 		  // Add the current transcript to the contents of our Note.
 		$("#text").html($("#text").html() + "<br>" +transcript);
 		console.log(event.results);
+		
+		  recognition.start();
 		$('#btn-stop').css({
 		  	backgroundColor: "#ddd"
 		  });
