@@ -51,22 +51,33 @@
 		  var transcript = event.results[current][0].transcript;
 
 		  // Add the current transcript to the contents of our Note.
-		  console.log(transcript);
-		$("#text").text(transcript);
+		$("#text").text($("#text").text() + " | " +transcript);
 		console.log(event.results);
+		$('#btn-stop').css({
+		  	backgroundColor: "#ddd"
+		  });
+		$('#btn-start').css({
+		  	backgroundColor: "#ddd"
+		  });
 		}
 
-		$('#btn-start').on('click', function(e) {
+		$('#btn-start').click( function(e) {
 		  recognition.start();
 		  $('#btn-start').css({
 		  	backgroundColor: "#999"
 		  });
+		  $('#btn-stop').css({
+		  	backgroundColor: "#ddd"
+		  });
 		});
 
-		$('#btn-stop').on('click', function(e) {
+		$('#btn-stop').click( function(e) {
 		  recognition.stop();
 		  $('#btn-stop').css({
 		  	backgroundColor: "#999"
+		  });
+		  $('#btn-start').css({
+		  	backgroundColor: "#ddd"
 		  });
 		});
 	} catch(e) {
