@@ -26,6 +26,9 @@
 		var recognition = new SpeechRecognition();
 		recognition.lang = 'pt-BR';
 		recognition.maxAlternatives = 5;
+
+		var continuous;
+
 		recognition.onstart = function() { 
 		  console.log('Reconhecimento de voz ativado.');
 		}
@@ -41,7 +44,7 @@
 		}
 
 		recognition.onend = function(event) {
-			recognition.start();
+			if (continuous) recognition.start();
 		}
 
 		recognition.onresult = function(event) {
@@ -66,6 +69,7 @@
 		}
 
 		$('#btn-start').click( function(e) {
+			continuous = true;
 		  recognition.start();
 
 		  $('#btn-start').css({
@@ -77,6 +81,7 @@
 		});
 
 		$('#btn-stop').click( function(e) {
+			continuous = false;
 		  recognition.stop();
 
 		  $('#btn-stop').css({
