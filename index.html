@@ -130,11 +130,13 @@
 			      audioChunks.push(event.data);
 			    });
 
-			    mediaRecorder.addEventListener("stop", () => {
+			    mediaRecorder.addEventListener("stop", function() {
 			      const audioBlob = new Blob(audioChunks);
 			      const audioUrl = URL.createObjectURL(audioBlob);
 			      const audio = new Audio(audioUrl);
-			      
+			      audio.play();
+
+			      console.log("here");
 			      $.post("https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
 			      	{
 			      		"config": {
@@ -148,7 +150,7 @@
   					  }
 			      	}).done(function(data) {
 			      		$("#google-text").text(data.results.alternatives[0].transcript);
-			      })
+			      });
 
 			    });
 
