@@ -136,21 +136,7 @@
 			      const audio = new Audio(audioUrl);
 			      audio.play();
 
-			      console.log("here");
-			      $.post("https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
-			      	{
-			      		"config": {
-					    "encoding": "LINEAR16",
-					    "sampleRateHertz": 16000,
-					    "languageCode": "pt-BR",
-					    "enableWordTimeOffsets": false
-					  },
-					  "audio": {
-					    "content": audio
-  					  }
-			      	}).done(function(data) {
-			      		$("#google-text").text(data.results.alternatives[0].transcript);
-			      });
+			      googleSpeech(audio);
 
 			    });
 
@@ -162,6 +148,27 @@
 		});
 
 	});
+
+	googleSpeech(audio) {
+		console.log("here");
+		$.post("https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
+			{
+				{
+					"config": {
+					"encoding": "LINEAR16",
+					"sampleRateHertz": 16000,
+					"languageCode": "pt-BR",
+					"enableWordTimeOffsets": false
+				},
+					"audio": {
+						"content": audio
+	  				}
+				}
+			}
+		).done(function(data) {
+      		$("#google-text").text(data.results.alternatives[0].transcript);
+		});
+	}
 
 </script>
 
