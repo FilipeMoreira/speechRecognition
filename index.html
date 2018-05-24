@@ -153,14 +153,14 @@
 		console.log("here");
 		$.post("https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
 			{
-				"config": {
+				config: {
 					"encoding": "LINEAR16",
 					"sampleRateHertz": 16000,
 					"languageCode": "pt-BR",
 					"enableWordTimeOffsets": false
 				},
-				"audio": {
-					"content": audio
+				audio: {
+					"content": null
   				}
 			}
 		).done(function(data) {
