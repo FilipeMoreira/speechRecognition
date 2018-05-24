@@ -15,6 +15,10 @@
 	  crossorigin="anonymous"></script>
 	</head>
 <body>
+<div id='btn-google'>Google Speech</div>
+<div id='google-text'></div>
+
+
 <div id='btn-start' class='btn'>Start</div>
 <div id='btn-stop' class='btn'>Stop</div>
 
@@ -111,6 +115,52 @@
 		});
 
 	}
+
+	$(document).ready(function() {
+
+		$("#btn-google").click(function() {
+
+			navigator.mediaDevices.getUserMedia({ audio: true })
+			  .then(stream => {
+			    const mediaRecorder = new MediaRecorder(stream);
+			    mediaRecorder.start();
+
+			    const audioChunks = [];
+			    mediaRecorder.addEventListener("dataavailable", event => {
+			      audioChunks.push(event.data);
+			    });
+
+			    mediaRecorder.addEventListener("stop", () => {
+			      const audioBlob = new Blob(audioChunks);
+			      const audioUrl = URL.createObjectURL(audioBlob);
+			      const audio = new Audio(audioUrl);
+			      
+			      $.post("https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
+			      	{
+			      		"config": {
+					    "encoding": "LINEAR16",
+					    "sampleRateHertz": 16000,
+					    "languageCode": "pt-BR",
+					    "enableWordTimeOffsets": false
+					  },
+					  "audio": {
+					    "content": audio
+  					  }
+			      	}).done(function(data) {
+			      		$("#google-text").text(data.results.alternatives[0].transcript);
+			      })
+
+			    });
+
+			    setTimeout(() => {
+			      mediaRecorder.stop();
+			    }, 3000);
+			  });
+
+		});
+
+	});
+
 </script>
 
 </body>
