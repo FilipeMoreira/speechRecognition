@@ -10,8 +10,7 @@
 		}
 	</style>
 	<script
-	  src="https://code.jquery.com/jquery-3.3.1.min.js"
-	  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
 	  crossorigin="anonymous"></script>
 	</head>
 <body>
@@ -28,7 +27,7 @@
 	try {
 		var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 		var recognition = new SpeechRecognition();
-		recognition.lang = 'pt-BR';
+		recognition.lang = 'en-US';
 		recognition.maxAlternatives = 5;
 
 		var continuous;
@@ -106,8 +105,8 @@
 		$.post("https://translation.googleapis.com/language/translate/v2",
 			{
 				key: "AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
-				source: "pt",
-				target: "en",
+				source: "en",
+				target: "pt",
 				q: value
 			}
 		).done(function(data) {
