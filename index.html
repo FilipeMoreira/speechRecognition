@@ -81,6 +81,7 @@
 	</head>
 <body style="background-color: #000">
 
+<div id='control'>
 <label for='inputLang'>Input Language: </label>
 <select option='inputLang' name='inputLang' id='inputLang'>
 	<option value='pt-BR'>Português</option>
@@ -94,6 +95,8 @@
 </select>
 
 <div id='btn-start' class='btn'>Start Caption</div>
+
+</div>
 
 <div id='text'>
 </div>
@@ -157,13 +160,8 @@
 
 			//recognition.lang = $("#inputLang").val();
 		  	recognition.start();
-
-		  $('#btn-start').css({
-		  	backgroundColor: "#999"
-		  });
-		  $('#btn-stop').css({
-		  	backgroundColor: "#ddd"
-		  });
+		  	$("#control").css('opacity', 0);
+		  
 		});
 
 	} catch(e) {
