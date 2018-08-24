@@ -3,6 +3,10 @@
 <head>
 	<title>Test</title>
 	<style type="text/css">
+	* {
+		color: #fff;
+	}
+
 		label {
 			font-family:Arial;
 			font-size:13px;
@@ -75,7 +79,7 @@
 	  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
 	  crossorigin="anonymous"></script>
 	</head>
-<body>
+<body style="background-color: #000">
 
 <label for='inputLang'>Input Language: </label>
 <select option='inputLang' name='inputLang' id='inputLang'>
@@ -132,11 +136,11 @@
 		  var transcript = event.results[current][0].transcript;
 
 		  // Add the current transcript to the contents of our Note.
-		  if (needsTranslation) {
+		  //if (needsTranslation) {
 		  	translateToEnglish(transcript);
-		  } else {
-		  	$("#text").html($("#text").html() + "<span>" +transcript+ "</span>");
-		  }
+		  // } else {
+		  // 	$("#text").html($("#text").html() + "<span>" +transcript+ "</span>");
+		  // }
 
 		
 		console.log(event.results);
@@ -151,8 +155,7 @@
 		$('#btn-start').click( function(e) {
 			continuous = true;
 
-			recognition.lang = $("#inputLang").val();
-			needsTranslation = $("#inputLang").val().split('-')[0] == $("#outputLang").val();
+			//recognition.lang = $("#inputLang").val();
 		  	recognition.start();
 
 		  $('#btn-start').css({
