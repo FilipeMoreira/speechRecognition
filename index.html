@@ -3,10 +3,72 @@
 <head>
 	<title>Test</title>
 	<style type="text/css">
+		label {
+			font-family:Arial;
+			font-size:13px;
+			font-weight:bold;
+		}
+
+		select {
+			margin-right: 13px
+		}
+
 		.btn {
-			padding: 4px;
-			border: 1px solid #000;
-			background-color: #ddd;
+			-moz-box-shadow: 0px 10px 14px -7px #276873;
+			-webkit-box-shadow: 0px 10px 14px -7px #276873;
+			box-shadow: 0px 10px 14px -7px #276873;
+			background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
+			background:-moz-linear-gradient(top, #599bb3 5%, #408c99 100%);
+			background:-webkit-linear-gradient(top, #599bb3 5%, #408c99 100%);
+			background:-o-linear-gradient(top, #599bb3 5%, #408c99 100%);
+			background:-ms-linear-gradient(top, #599bb3 5%, #408c99 100%);
+			background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99',GradientType=0);
+			background-color:#599bb3;
+			-moz-border-radius:8px;
+			-webkit-border-radius:8px;
+			border-radius:8px;
+			display:inline-block;
+			cursor:pointer;
+			color:#ffffff;
+			font-family:Arial;
+			font-size:17px;
+			font-weight:bold;
+			padding:6px 32px;
+			text-decoration:none;
+			text-shadow:0px 1px 0px #3d768a;
+			margin-left: 10px;
+		}
+
+		.btn:hover {
+			background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #408c99), color-stop(1, #599bb3));
+			background:-moz-linear-gradient(top, #408c99 5%, #599bb3 100%);
+			background:-webkit-linear-gradient(top, #408c99 5%, #599bb3 100%);
+			background:-o-linear-gradient(top, #408c99 5%, #599bb3 100%);
+			background:-ms-linear-gradient(top, #408c99 5%, #599bb3 100%);
+			background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#408c99', endColorstr='#599bb3',GradientType=0);
+			background-color:#408c99;
+		}
+
+		.btn:active {
+			position:relative;
+			top:1px;
+		}
+
+		span {
+			margin: 2px 5px 2px 4px;
+			font-family:Arial;
+			font-size:17px;
+			font-weight:bold;
+			display: flex-end;
+		}
+
+		#text {
+			width: 100%;
+			height: 100%;
+			padding: 10px;
+			position: relative;
 		}
 	</style>
 	<script
@@ -14,19 +76,28 @@
 	  crossorigin="anonymous"></script>
 	</head>
 <body>
-<div id='btn-google'>Google Speech</div>
-<div id='google-text'></div>
 
+<label for='inputLang'>Input Language: </label>
+<select option='inputLang' name='inputLang'>
+	<option value='pt-BR'>Português</option>
+	<option value='en-US'>English</option>
+</select>
 
-<div id='btn-start' class='btn'>Start</div>
-<div id='btn-stop' class='btn'>Stop</div>
+<label for='outputLang'>Output Language: </label>
+<select option='outputLang' name='inputLang'>
+	<option value='en'>English</option>
+	<option value='pt'>Português</option>
+</select>
 
-<div id='text'></div>
+<div id='btn-start' class='btn'>Start Caption</div>
 
+<div id='text'>
+</div>
 <script type="text/javascript">
 	try {
 		var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 		var recognition = new SpeechRecognition();
+		var needsTranslation = true;
 		recognition.lang = 'en-US';
 		recognition.maxAlternatives = 5;
 
@@ -61,8 +132,13 @@
 		  var transcript = event.results[current][0].transcript;
 
 		  // Add the current transcript to the contents of our Note.
-		$("#text").html($("#text").html() + "<br>" +transcript);
-		translateToEnglish(transcript);
+		  if (needsTranslation) {
+		  	translateToEnglish(transcript);
+		  } else {
+		  	$("#text").html($("#text").html() + "<span>" +transcript+ "</span>");
+		  }
+
+		
 		console.log(event.results);
 		$('#btn-stop').css({
 		  	backgroundColor: "#ddd"
@@ -74,7 +150,10 @@
 
 		$('#btn-start').click( function(e) {
 			continuous = true;
-		  recognition.start();
+
+			recognition.lang = $("#inputLang").val();
+			needsTranslation = $("#inputLang").val().split('-')[0] == $("#outputLang").val();
+		  	recognition.start();
 
 		  $('#btn-start').css({
 		  	backgroundColor: "#999"
@@ -84,17 +163,6 @@
 		  });
 		});
 
-		$('#btn-stop').click( function(e) {
-			continuous = false;
-		  recognition.stop();
-
-		  $('#btn-stop').css({
-		  	backgroundColor: "#999"
-		  });
-		  $('#btn-start').css({
-		  	backgroundColor: "#ddd"
-		  });
-		});
 	} catch(e) {
 		console.error(e);
 		$("#text").html($("#text").html() + "<br>ERRO: "+e);
@@ -110,61 +178,9 @@
 				q: value
 			}
 		).done(function(data) {
-			$("#text").html($("#text").html() + "<br><i>" +data.data.translations[0].translatedText+"</i>");
+			$("#text").html($("#text").html() + "<span>" +data.data.translations[0].translatedText+"</span>");
 		});
 
-	}
-
-	$(document).ready(function() {
-
-		$("#btn-google").click(function() {
-
-			navigator.mediaDevices.getUserMedia({ audio: true })
-			  .then(stream => {
-			    const mediaRecorder = new MediaRecorder(stream);
-			    mediaRecorder.start();
-
-			    const audioChunks = [];
-			    mediaRecorder.addEventListener("dataavailable", event => {
-			      audioChunks.push(event.data);
-			    });
-
-			    mediaRecorder.addEventListener("stop", function() {
-			      const audioBlob = new Blob(audioChunks);
-			      const audioUrl = URL.createObjectURL(audioBlob);
-			      const audio = new Audio(audioUrl);
-			      audio.play();
-
-			      googleSpeech(audioUrl);
-
-			    });
-
-			    setTimeout(() => {
-			      mediaRecorder.stop();
-			    }, 3000);
-			  });
-
-		});
-
-	});
-
-	function googleSpeech(audio) {
-		console.log("here");
-		$.post("https://speech.googleapis.com/v1/speech:recognize?key=AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
-			{
-				config: {
-					"encoding": "LINEAR16",
-					"sampleRateHertz": 16000,
-					"languageCode": "pt-BR",
-					"enableWordTimeOffsets": false
-				},
-				audio: {
-					"content": audio
-  				}
-			}
-		).done(function(data) {
-      		$("#google-text").text(data.results.alternatives[0].transcript);
-		});
 	}
 
 </script>
