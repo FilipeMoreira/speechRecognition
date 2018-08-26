@@ -3,6 +3,7 @@
 <head>
 	<title>Cenaculus</title>
 	<meta charset="utf-8">
+	<link rel="icon" type="img/ico" href="favicon.ico">
 	<style type="text/css">
 		* {
 			color: #fff;
@@ -114,6 +115,9 @@
 		recognition.lang = 'en-US';
 		recognition.maxAlternatives = 5;
 
+		var spanId = 0;
+		var spans = [];
+
 		var continuous;
 
 		recognition.onstart = function() { 
@@ -148,7 +152,12 @@
 		  if ($("#inputLang").val().split("-")[0] != $("#outputLang").val()) {
 		  	translateToEnglish(transcript);
 		  } else {
-		  	$("#text").html($("#text").html() + "<span>" +transcript+ "</span>");
+		  	$("#text").html($("#text").html() + "<span id='span_'" + spanId + ">" +transcript+ "</span>");
+		  	spanId++;
+		  	spans.push(transcript);
+		  	setTimeout(function() {
+
+		  	}, (transcript.length/13)*1000);
 		  }
 
 		
