@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Test</title>
+	<title>Cenaculus</title>
+	<meta charset="utf-8">
 	<style type="text/css">
-	* {
-		color: #fff;
-	}
+		* {
+			color: #fff;
+		}
 
 		label {
 			font-family:Arial;
@@ -63,16 +64,20 @@
 		span {
 			margin: 2px 5px 2px 4px;
 			font-family:Arial;
-			font-size:17px;
+			font-size:68px;
 			font-weight:bold;
 			display: flex-end;
 		}
 
 		#text {
 			width: 100%;
-			height: 100%;
-			padding: 10px;
-			position: relative;
+			margin: 15px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			-webkit-transform: translate(-50%,-50%);
+			-moz-transform: translate(-50%,-50%);
 		}
 	</style>
 	<script
@@ -99,6 +104,7 @@
 </div>
 
 <div id='text'>
+<span>Olá esse é um teste de tradução.</span><span>Olá esse é um teste de tradução.</span><span>Olá esse é um teste de tradução.</span>
 </div>
 <script type="text/javascript">
 	try {
@@ -139,11 +145,11 @@
 		  var transcript = event.results[current][0].transcript;
 
 		  // Add the current transcript to the contents of our Note.
-		  //if (needsTranslation) {
+		  if ($("#inputLang").val().split("-")[0] != $("#outputLang").val()) {
 		  	translateToEnglish(transcript);
-		  // } else {
-		  // 	$("#text").html($("#text").html() + "<span>" +transcript+ "</span>");
-		  // }
+		  } else {
+		  	$("#text").html($("#text").html() + "<span>" +transcript+ "</span>");
+		  }
 
 		
 		console.log(event.results);
@@ -158,7 +164,8 @@
 		$('#btn-start').click( function(e) {
 			continuous = true;
 
-			//recognition.lang = $("#inputLang").val();
+			recognition.lang = $("#inputLang").val();
+
 		  	recognition.start();
 		  	$("#control").css('opacity', 0);
 		  
@@ -174,8 +181,8 @@
 		$.post("https://translation.googleapis.com/language/translate/v2",
 			{
 				key: "AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
-				source: "en",
-				target: "pt",
+				source: $("#inputLang").val().split("-")[0],
+				target: $("#inputLang").val(),
 				q: value
 			}
 		).done(function(data) {
