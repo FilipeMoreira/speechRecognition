@@ -43,7 +43,7 @@ $(document).ready(function() {
 
 		  // Add the current transcript to the contents of our Note.
 		  if ($("#inputLang").val().split("-")[0] != $("#outputLang").val()) {
-		  	insertIntoPhraseArray(translateToEnglish(transcript));
+		  	insertIntoPhraseArray(translateToEnglish(transcript, $("#inputLang").val().split("-")[0], $("#outputLang").val()));
 		  } else {
 		  	insertIntoPhraseArray(transcript);
 		  }
@@ -107,15 +107,18 @@ function generatePhrase(value) {
 	return "<span class='phrase'>" + value + "</span>";
 }
 
-function translateToEnglish(value) {
+function translateToEnglish(value, sourceLang, targetLang) {
 
 	let phrase = "";
+
+	console.log(sourceLang);
+	console.log(targetLang);
 
 	$.post("https://translation.googleapis.com/language/translate/v2",
 		{
 			key: "AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
-			source: $("#inputLang").val().split("-")[0],
-			target: $("#inputLang").val(),
+			source: sourceLang,
+			target: targetLang,
 			q: value
 		}
 	).done(function(data) {
