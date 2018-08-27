@@ -20,41 +20,40 @@
 		}
 
 		.btn {
-			-moz-box-shadow: 0px 10px 14px -7px #276873;
-			-webkit-box-shadow: 0px 10px 14px -7px #276873;
-			box-shadow: 0px 10px 14px -7px #276873;
-			background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
+			-moz-box-shadow: 0px 10px 14px -7px #000;
+			-webkit-box-shadow: 0px 10px 14px -7px #000;
+			box-shadow: 0px 10px 14px -7px #000;
+			/*background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
 			background:-moz-linear-gradient(top, #599bb3 5%, #408c99 100%);
 			background:-webkit-linear-gradient(top, #599bb3 5%, #408c99 100%);
 			background:-o-linear-gradient(top, #599bb3 5%, #408c99 100%);
 			background:-ms-linear-gradient(top, #599bb3 5%, #408c99 100%);
 			background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
-			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99',GradientType=0);
-			background-color:#599bb3;
+			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99',GradientType=0);*/
+			background-color:#eecc44;
 			-moz-border-radius:8px;
 			-webkit-border-radius:8px;
 			border-radius:8px;
 			display:inline-block;
 			cursor:pointer;
-			color:#ffffff;
+			color:#333;
 			font-family:Arial;
 			font-size:17px;
 			font-weight:bold;
 			padding:6px 32px;
 			text-decoration:none;
-			text-shadow:0px 1px 0px #3d768a;
 			margin-left: 10px;
 		}
 
 		.btn:hover {
-			background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #408c99), color-stop(1, #599bb3));
+			/*background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #408c99), color-stop(1, #599bb3));
 			background:-moz-linear-gradient(top, #408c99 5%, #599bb3 100%);
 			background:-webkit-linear-gradient(top, #408c99 5%, #599bb3 100%);
 			background:-o-linear-gradient(top, #408c99 5%, #599bb3 100%);
 			background:-ms-linear-gradient(top, #408c99 5%, #599bb3 100%);
 			background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
-			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#408c99', endColorstr='#599bb3',GradientType=0);
-			background-color:#408c99;
+			filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#408c99', endColorstr='#599bb3',GradientType=0);*/
+			background-color:#ffdd55;
 		}
 
 		.btn:active {
@@ -80,6 +79,29 @@
 			-webkit-transform: translate(-50%,-50%);
 			-moz-transform: translate(-50%,-50%);
 		}
+
+		option {
+			color: #333;
+		}
+
+		#control {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			-webkit-transform: translate(-50%,-50%);
+			-moz-transform: translate(-50%,-50%);
+		}
+
+		.footer {
+			position: absolute;
+			top: 98%;
+			left: 50%;
+			transform: translate(-50%,-100%);
+			-webkit-transform: translate(-50%,-100%);
+			-moz-transform: translate(-50%,-50%);
+		}
+
 	</style>
 	<script
 	  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
@@ -88,118 +110,29 @@
 <body style="background-color: #000">
 
 <div id='control'>
-<label for='inputLang'>Input Language: </label>
-<select option='inputLang' name='inputLang' id='inputLang'>
-	<option value='pt-BR'>Português</option>
-	<option value='en-US'>English</option>
-</select>
+	<label for='inputLang'>Input Language: </label>
+	<select option='inputLang' name='inputLang' id='inputLang'>
+		<option value='pt-BR'>Português</option>
+		<option value='en-US'>English</option>
+	</select>
 
-<label for='outputLang'>Output Language: </label>
-<select option='outputLang' name='outputLang' id='outputLang'>
-	<option value='en'>English</option>
-	<option value='pt'>Português</option>
-</select>
+	<label for='outputLang'>Output Language: </label>
+	<select option='outputLang' name='outputLang' id='outputLang'>
+		<option value='en'>English</option>
+		<option value='pt'>Português</option>
+	</select>
 
-<div id='btn-start' class='btn'>Start Caption</div>
-
+	<div id='btn-start' class='btn'>Start</div>
 </div>
+<div class='footer'>
+	<img src="cenaculus_logo.png" height="48px">
+</div>
+
 
 <div id='text'>
-<span>Olá esse é um teste de tradução.</span><span>Olá esse é um teste de tradução.</span><span>Olá esse é um teste de tradução.</span>
 </div>
-<script type="text/javascript">
-	try {
-		var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-		var recognition = new SpeechRecognition();
-		var needsTranslation = true;
-		recognition.lang = 'en-US';
-		recognition.maxAlternatives = 5;
-
-		var spanId = 0;
-		var spans = [];
-
-		var continuous;
-
-		recognition.onstart = function() { 
-		  console.log('Reconhecimento de voz ativado.');
-		}
-
-		recognition.onspeechend = function() {
-		  console.log('Silencio detectado. Reconhecimento de voz desativado.');
-		}
-
-		recognition.onerror = function(event) {
-		  if(event.error == 'no-speech') {
-		    console.log('Nenhuma fala foi detectada.');
-			}
-		}
-
-		recognition.onend = function(event) {
-			if (continuous) recognition.start();
-		}
-
-		recognition.onresult = function(event) {
-
-		  // event is a SpeechRecognitionEvent object.
-		  // It holds all the lines we have captured so far. 
-		  // We only need the current one.
-		  var current = event.resultIndex;
-
-		  // Get a transcript of what was said.
-		  var transcript = event.results[current][0].transcript;
-
-		  // Add the current transcript to the contents of our Note.
-		  if ($("#inputLang").val().split("-")[0] != $("#outputLang").val()) {
-		  	translateToEnglish(transcript);
-		  } else {
-		  	$("#text").html($("#text").html() + "<span id='span_'" + spanId + ">" +transcript+ "</span>");
-		  	spanId++;
-		  	spans.push(transcript);
-		  	setTimeout(function() {
-
-		  	}, (transcript.length/13)*1000);
-		  }
-
-		
-		console.log(event.results);
-		$('#btn-stop').css({
-		  	backgroundColor: "#ddd"
-		  });
-		$('#btn-start').css({
-		  	backgroundColor: "#ddd"
-		  });
-		}
-
-		$('#btn-start').click( function(e) {
-			continuous = true;
-
-			recognition.lang = $("#inputLang").val();
-
-		  	recognition.start();
-		  	$("#control").css('opacity', 0);
-		  
-		});
-
-	} catch(e) {
-		console.error(e);
-		$("#text").html($("#text").html() + "<br>ERRO: "+e);
-	}
-
-	function translateToEnglish(value) {
-
-		$.post("https://translation.googleapis.com/language/translate/v2",
-			{
-				key: "AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
-				source: $("#inputLang").val().split("-")[0],
-				target: $("#inputLang").val(),
-				q: value
-			}
-		).done(function(data) {
-			$("#text").html($("#text").html() + "<span>" +data.data.translations[0].translatedText+"</span>");
-		});
-
-	}
-
+<script type="text/javascript" src="main.js">
+	
 </script>
 
 </body>
