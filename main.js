@@ -78,7 +78,7 @@ function insertIntoPhraseArray(value) {
 	let phrase = {
 		text: value,
 		initTime: new Date().getTime(),
-		time: (value.length/2) > 1 ? (value.length/2)*1000 : 1000
+		time: (value.length/4) > 1 ? (value.length/4)*1000 : 1000
 	}
 
 	console.log(phrase);
