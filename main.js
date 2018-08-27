@@ -109,6 +109,8 @@ function generatePhrase(value) {
 
 function translateToEnglish(value) {
 
+	let phrase = "";
+
 	$.post("https://translation.googleapis.com/language/translate/v2",
 		{
 			key: "AIzaSyASfEsrO2CELhU3QohVw6HlOJtpWGhLLNI",
@@ -117,7 +119,8 @@ function translateToEnglish(value) {
 			q: value
 		}
 	).done(function(data) {
-		$("#text").html($("#text").html() + "<span>" +data.data.translations[0].translatedText+"</span>");
+		phrase = data.data.translations[0].translatedText;
 	});
 
+	return phrase;
 }
