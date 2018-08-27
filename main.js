@@ -43,7 +43,7 @@ $(document).ready(function() {
 
 		  // Add the current transcript to the contents of our Note.
 		  if ($("#inputLang").val().split("-")[0] != $("#outputLang").val()) {
-		  	insertIntoPhraseArray(translateToEnglish(transcript, $("#inputLang").val().split("-")[0], $("#outputLang").val()));
+		  	translateToEnglish(transcript, $("#inputLang").val().split("-")[0], $("#outputLang").val());
 		  } else {
 		  	insertIntoPhraseArray(transcript);
 		  }
@@ -122,8 +122,6 @@ function translateToEnglish(value, sourceLang, targetLang) {
 			q: value
 		}
 	).done(function(data) {
-		phrase = data.data.translations[0].translatedText;
+		insertIntoPhraseArray(data.data.translations[0].translatedText);
 	});
-
-	return phrase;
 }
